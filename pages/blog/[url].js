@@ -37,6 +37,19 @@ Consultando la API para obtener las entradas del Blog por ID
 
 -------------------------------------------------
 -- 
+export async function getServerSideProps({ query: { url } }) {
+  const urlBlog = `${process.env.API_URL}/blog?url=${url}`;
+  const respuesta = await fetch(urlBlog);
+  const entrada = await respuesta.json();
+
+  return {
+    props: { entrada }
+  };
+}
+
+-------------------------------------------------
+
+*/
 
 // getStaticPath se encarga de recoger las urls que se
 // van a cargar una vez nuestra app termine de construirse.
@@ -83,19 +96,5 @@ export async function getStaticProps({ params: { url } }) {
     props: { entrada: entrada[0] },
   };
 }
--------------------------------------------------
-
-*/
-
-export async function getServerSideProps({ query: { url } }) {
-  const urlBlog = `${process.env.API_URL}/blog?url=${url}`;
-  const respuesta = await fetch(urlBlog);
-  const entrada = await respuesta.json();
-
-  return {
-    props: { entrada }
-  };
-}
-
 
 export default EntradaBlog;
