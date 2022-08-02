@@ -9,7 +9,7 @@ const Footer = () => {
             <nav className={styles.navegacion}>
                 <Link href="/">Inicio</Link>
                 <Link href="/nosotros">Nosotros</Link>
-                <Link href="/blogs">Blogs</Link>
+                <Link href="/blog">Blog</Link>
                 <Link href="/tienda">Tienda</Link>
             </nav>
 

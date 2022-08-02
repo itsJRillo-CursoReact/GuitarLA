@@ -88,7 +88,7 @@ export async function getStaticProps({ params: { url } }) {
 */
 
 export async function getServerSideProps({ query: { url } }) {
-  const urlBlog = `${process.env.API_URL}/blogs?url=${url}`;
+  const urlBlog = `${process.env.API_URL}/blog?url=${url}`;
   const respuesta = await fetch(urlBlog);
   const entrada = await respuesta.json();
 
