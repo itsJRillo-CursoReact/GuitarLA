@@ -1,28 +1,67 @@
 import Image from "next/image";
+import { useState } from "react";
 import Layout from "../../components/Layout";
-import styles from "../../styles/Guitarra.module.css"
+import styles from "../../styles/Guitarra.module.css";
 
-const VerGuitarra = ({ guitarra }) => {
-  const { nombre, descripcion, precio, imagen, url } = guitarra;
+const VerGuitarra = ({ guitarra, agregarCarrito }) => {
+  const { nombre, descripcion, precio, imagen, id } = guitarra[0];
+  const [cantidad, setCantidad] = useState(1);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (cantidad < 1) {
+      alert("Cantidad no válida");
+      return;
+    }
+
+    const guitarraSeleccionada = {
+      id,
+      imagen: imagen.url,
+      nombre,
+      precio,
+      cantidad,
+    };
+
+    agregarCarrito(guitarraSeleccionada);
+    alert(`Guitarra ${nombre} se ha subido al carrito`);
+  };
 
   return (
-    <Layout pagina={nombre}>
-      <main className="contenedor">
-        <h1 className="heading">{nombre}</h1>
-        <div className={styles.entra}>
-          <Image
-            layout="responsive"
-            width={800}
-            height={600}
-            src={imagen.url}
-            alt={`Imagen Guitarra ${nombre}`}
-          />
-          <div className={styles.contenido}>
-            <p className={styles.precio}>{precio}€</p>
-            <p className={styles.descripcion}>{descripcion}</p> 
-          </div>
+    <Layout pagina={`Guitarra ${nombre}`}>
+      <div className={styles.guitarra}>
+        <Image
+          priority="true"
+          width={180}
+          height={350}
+          src={imagen.url}
+          alt={`imagen guitarra ${nombre}`}
+          layout="responsive"
+        />
+        <div className={styles.contenido}>
+          <h1>{nombre}</h1>
+          <p className={styles.descripcion}>{descripcion}</p>
+          <p className={styles.precio}>{precio} €</p>
+          <form onSubmit={handleSubmit} className={styles.formulario}>
+            <label>Cantidad:</label>
+            <select
+              onChange={(e) => setCantidad(parseInt(e.target.value))}
+              value={cantidad}
+            >
+              <option value="0">-- Seleccione --</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+            <input value="Agregar al Carrito" type="submit"></input>
+          </form>
         </div>
-      </main>
+      </div>
     </Layout>
   );
 };
@@ -33,21 +72,6 @@ Routing Dinámico
 Consultando la API para obtener las entradas del Blog por ID
 
 -------------------------------------------------
--- getServerSideProps()
-
-    export async function getServerSideProps({ query: { id } }) {
-
-    const url = `${process.env.API_URL}/blogs/${id}`;
-    const respuesta = await fetch(url);
-    const entrada = await respuesta.json();
-
-    return {
-        props: {entrada},
-    };
-    }
--------------------------------------------------
-
-*/
 
 // getStaticPath se encarga de recoger las urls que se
 // van a cargar una vez nuestra app termine de construirse.
@@ -90,7 +114,21 @@ export async function getStaticProps({ params: { url } }) {
   const guitarra = await respuesta.json();
 
   return {
-    props: { guitarra:guitarra[0] },
+    props: { guitarra: guitarra[0] },
+  };
+}
+
+-------------------------------------------------
+
+*/
+
+export async function getServerSideProps({ query: { url } }) {
+  const urlGuitar = `${process.env.API_URL}/guitarras?url=${url}`;
+  const respuesta = await fetch(urlGuitar);
+  const guitarra = await respuesta.json();
+
+  return {
+    props: { guitarra },
   };
 }
 

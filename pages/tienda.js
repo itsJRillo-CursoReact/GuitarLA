@@ -1,5 +1,5 @@
 import Layout from "../components/Layout";
-import Listado from "../components/Listado";
+import ListadoGuitarra from "../components/ListadoGuitarra";
 
 const Tienda = ({ guitarras }) => {
   return (
@@ -7,7 +7,7 @@ const Tienda = ({ guitarras }) => {
       <main className="contenedor">
         <h1 className="heading">Nuestra colección</h1>
         <div>
-          <Listado guitarras={guitarras} />
+          <ListadoGuitarra guitarras={guitarras} />
         </div>
       </main>
     </Layout>

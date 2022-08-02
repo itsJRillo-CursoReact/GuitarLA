@@ -1,6 +1,7 @@
 .blog{
     display:grid;
-    gap:4rem;
+    gap:2rem;
+    padding: 4rem;
 }
 
 @media(min-width:768px){
