@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Layout from "../../components/Layout";
 import { formatearFecha } from "../../helpers";
-import styles from "../../styles/Entrada.module.css"
+import styles from "../../styles/Entrada.module.css";
 
 const EntradaBlog = ({ entrada }) => {
   const { titulo, contenido, imagen, published_at } = entrada;
@@ -19,8 +19,10 @@ const EntradaBlog = ({ entrada }) => {
             alt={`imagen blog ${titulo}`}
           />
           <div className={styles.contenido}>
-            <p className={styles.fecha}>Publicado el {formatearFecha(published_at)}</p>
-            <p className={styles.texto}>{contenido}</p> 
+            <p className={styles.fecha}>
+              Publicado el {formatearFecha(published_at)}
+            </p>
+            <p className={styles.texto}>{contenido}</p>
           </div>
         </article>
       </main>
@@ -34,24 +36,11 @@ Routing Dinámico
 Consultando la API para obtener las entradas del Blog por ID
 
 -------------------------------------------------
--- getServerSideProps()
-
-    export async function getServerSideProps({ query: { id } }) {
-
-    const url = `${process.env.API_URL}/blogs/${id}`;
-    const respuesta = await fetch(url);
-    const entrada = await respuesta.json();
-
-    return {
-        props: {entrada},
-    };
-    }
--------------------------------------------------
-
-*/
+-- 
 
 // getStaticPath se encarga de recoger las urls que se
 // van a cargar una vez nuestra app termine de construirse.
+
 
 export async function getStaticPaths() {
   // Le pasamos la URL y fetcheamos aquellas que nos interesan
@@ -91,8 +80,22 @@ export async function getStaticProps({ params: { url } }) {
   const entrada = await respuesta.json();
 
   return {
-    props: { entrada:entrada[0] },
+    props: { entrada: entrada[0] },
   };
 }
+-------------------------------------------------
+
+*/
+
+export async function getServerSideProps({ query: { url } }) {
+  const urlBlog = `${process.env.API_URL}/blogs?url=${url}`;
+  const respuesta = await fetch(urlBlog);
+  const entrada = await respuesta.json();
+
+  return {
+    props: { entrada }
+  };
+}
+
 
 export default EntradaBlog;
