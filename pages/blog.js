@@ -15,14 +15,14 @@ const Blog = ({ entradas }) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const url = `${process.env.API_URL}/blogs`;
   const respuesta = await fetch(url);
   const entradas = await respuesta.json();
 
   return {
     props: {
-      entradas,
+      entradas
     },
   };
 }

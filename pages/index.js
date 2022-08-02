@@ -40,20 +40,20 @@ export async function getServerSideProps() {
   const [resGuitarra, resCursos, resEntradas] = await Promise.all([
     fetch(urlGuitar),
     fetch(urlCursos),
-    fetch(urlBlogs),
+    fetch(urlBlogs)
   ]);
 
   const [guitarras, curso, entradas] = await Promise.all([
     resGuitarra.json(),
     resCursos.json(),
-    resEntradas.json(),
+    resEntradas.json()
   ]);
 
   return {
     props: {
       guitarras,
       curso,
-      entradas,
-    },
+      entradas
+    }
   };
 }
